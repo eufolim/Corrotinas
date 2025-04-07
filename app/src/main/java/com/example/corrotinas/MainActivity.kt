@@ -7,18 +7,14 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Button
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -28,12 +24,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.corrotinas.ui.theme.CorrotinasTheme
-import kotlinx.coroutines.*
+import kotlinx.coroutines.delay
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -85,7 +80,7 @@ fun GreetingPreview() {
 @Composable
 fun Semaforo(c1: Color, c2: Color, c3: Color) {
     Column(
-//        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier.padding(6.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
@@ -114,13 +109,6 @@ fun Main() {
     LaunchedEffect(Unit) {
         while (true) {
 
-            if(!isYellowBlinking) {
-                // Vermelho
-                c1 = Color.Red
-                c2 = Color.White
-                c3 = Color.White
-                delay(2000L)
-            }
             if (!isYellowBlinking) {
                 // Verde
                 c1 = Color.White
@@ -131,17 +119,24 @@ fun Main() {
             if (!isYellowBlinking) {
                 // Amarelo
                 c1 = Color.White
-                c2 = Color.Yellow// Pisca amarelo se o botão estiver ativado
+                c2 = Color.Yellow//
                 c3 = Color.White
-                delay(1000L) // Duração do amarelo
+                delay(1000L)
             }
-            // Finaliza o ciclo
+            if(!isYellowBlinking) {
+                // Vermelho
+                c1 = Color.Red
+                c2 = Color.White
+                c3 = Color.White
+                delay(2000L)
+            }
+
+            //Pisca amarelo se o botão estiver ativado
             if (isYellowBlinking) {
-                // Volta para o estado normal (sem piscar)
                 c1 = Color.White
                 c2 = Color.Yellow
                 c3 = Color.White
-                delay(200L) // Duração do amarelo fixo
+                delay(200L)
                 c1 = Color.White
                 c2 = Color.White
                 c3 = Color.White
@@ -157,7 +152,7 @@ fun Main() {
     ) {
         Semaforo(c1 = c1, c2 = c2, c3 = c3)
 
-//        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(16.dp))
 
         Button(onClick = {
             isYellowBlinking = !isYellowBlinking // Alterna o estado de piscar amarelo
